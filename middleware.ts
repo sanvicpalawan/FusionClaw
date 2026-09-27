@@ -4,7 +4,6 @@ import { jwtVerify } from 'jose'
 // ─── Route matchers ─────────────────────────────────────────────────────────
 
 const PUBLIC_PATHS = [
-  /^\/$/,
   /^\/login(\/.*)?$/,
   /^\/api\/auth\/login$/,
   /^\/api\/auth\/logout$/,
@@ -12,6 +11,7 @@ const PUBLIC_PATHS = [
   /^\/embed\/.+/,                // tokenized client-portal pages — token in URL is the auth
   /^\/api\/hooks\/.+/,            // inbound webhooks — secret in URL is the auth
   /^\/api\/inbound-emails$/,      // inbound email receiver — for provider webhooks
+  /^\/settings\/passkey/,         // admin passkey entry page — passkey IS the auth
 ]
 const API_PREFIX = /^\/api\//
 
@@ -46,6 +46,17 @@ function validateMcpApiKey(key: string): boolean {
   let result = 0
   for (let i = 0; i < key.length; i++) {
     result |= key.charCodeAt(i) ^ validKey.charCodeAt(i)
+  }
+  return result === 0
+}
+
+// ─── Admin passkey validation (Edge-compatible, constant-time) ──────────────
+
+function validatePasskey(submitted: string, expected: string): boolean {
+  if (submitted.length !== expected.length) return false
+  let result = 0
+  for (let i = 0; i < expected.length; i++) {
+    result |= submitted.charCodeAt(i) ^ expected.charCodeAt(i)
   }
   return result === 0
 }
@@ -88,7 +99,12 @@ const DEMO_WRITE_ALLOW = [/^\/api\/auth\//, /^\/api\/demo\/seed$/]
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // 0. Public demo: reads pass through as the owner, writes are refused.
+  // 0. Root → redirect straight to the dashboard (not the landing page).
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/dashboard', req.url))
+  }
+
+  // 1. Public demo: reads pass through as the owner, writes are refused.
   if (DEMO_MODE) {
     if (isApi(pathname) && !DEMO_READ_METHODS.has(req.method) && !DEMO_WRITE_ALLOW.some((re) => re.test(pathname))) {
       return NextResponse.json(
@@ -111,9 +127,22 @@ export default async function middleware(req: NextRequest) {
     }
   }
 
-  // 2. Public routes — landing page, login, auth APIs, OAuth callbacks.
+  // 2. Public routes — login, auth APIs, OAuth callbacks, passkey entry page.
   if (isPublic(pathname)) {
     return NextResponse.next()
+  }
+
+  // 2.5. Admin passkey gate — /settings requires a passkey cookie.
+  const ADMIN_PASSKEY = process.env.ADMIN_PASSKEY || '5309'
+  const PASSKEY_COOKIE = 'fc_admin_passkey'
+  const isAdminSettingPath = pathname.startsWith('/settings') && !pathname.startsWith('/settings/passkey')
+  if (isAdminSettingPath) {
+    const passkeyCookie = req.cookies.get(PASSKEY_COOKIE)?.value
+    if (!passkeyCookie || !validatePasskey(passkeyCookie, ADMIN_PASSKEY)) {
+      const passkeyUrl = new URL('/settings/passkey', req.url)
+      passkeyUrl.searchParams.set('next', pathname)
+      return NextResponse.redirect(passkeyUrl)
+    }
   }
 
   // 3. Localhost — trusted, no auth required. lib/auth.getCurrentUser()
