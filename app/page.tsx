@@ -27,8 +27,8 @@ export const metadata = {
   alternates: { canonical: "/" },
 };
 
-const REPO = "https://github.com/Fusion-Data-Company/FusionClaw";
-const DEMO = process.env.NEXT_PUBLIC_DEMO_URL || "https://fusionclaw-demo.vercel.app";
+const REPO = "https://github.com/sanvicpalawan/FusionClaw";
+const DEMO = process.env.NEXT_PUBLIC_DEMO_URL || "https://sanvicpalawan.github.io/FusionClaw";
 
 /* ── the artefacts: captured, not composed ──────────────────────────────── */
 
