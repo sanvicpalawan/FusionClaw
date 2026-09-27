@@ -12,6 +12,7 @@ const PUBLIC_PATHS = [
   /^\/api\/hooks\/.+/,            // inbound webhooks — secret in URL is the auth
   /^\/api\/inbound-emails$/,      // inbound email receiver — for provider webhooks
   /^\/settings\/passkey/,         // admin passkey entry page — passkey IS the auth
+  /^\/api\/settings\/passkey/,    // admin passkey submission API — passkey IS the auth
 ]
 const API_PREFIX = /^\/api\//
 
@@ -100,8 +101,19 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   // 0. Root → redirect straight to the dashboard (not the landing page).
+  //    The marketing page still lives at /marketing for reference.
   if (pathname === '/') {
     return NextResponse.redirect(new URL('/dashboard', req.url))
+  }
+
+  // 0.1. Force the admin passkey environment variable.
+  //    The deployed worker MUST have ADMIN_PASSKEY set (default 5309).
+  //    If it is missing or blank, send every request to the passkey entry
+  //    page rather than leaving /settings open.
+  if (process.env.ADMIN_PASSKEY == null || process.env.ADMIN_PASSKEY === '') {
+    const passkeyUrl = new URL('/settings/passkey', req.url)
+    passkeyUrl.searchParams.set('next', pathname)
+    return NextResponse.redirect(passkeyUrl)
   }
 
   // 1. Public demo: reads pass through as the owner, writes are refused.
@@ -132,17 +144,30 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  // 2.5. Admin passkey gate — /settings requires a passkey cookie.
+  // 2.5. Admin passkey gate — /settings (UI) and /api/settings (API) require
+  //    a passkey cookie. The passkey cookie is itself sufficient auth for both:
+  //    once the user has entered 5309 on /settings/passkey, the cookie carries
+  //    them through without a session.
   const ADMIN_PASSKEY = process.env.ADMIN_PASSKEY || '5309'
   const PASSKEY_COOKIE = 'fc_admin_passkey'
   const isAdminSettingPath = pathname.startsWith('/settings') && !pathname.startsWith('/settings/passkey')
-  if (isAdminSettingPath) {
+  const isAdminSettingsApi = pathname === '/api/settings' || pathname.startsWith('/api/settings/')
+  if (isAdminSettingPath || isAdminSettingsApi) {
     const passkeyCookie = req.cookies.get(PASSKEY_COOKIE)?.value
     if (!passkeyCookie || !validatePasskey(passkeyCookie, ADMIN_PASSKEY)) {
+      // For the API, return 403 so the client can read the refusal instead of
+      // being redirected to an HTML passkey page that it cannot render.
+      if (isApi(pathname)) {
+        return NextResponse.json({ error: 'Admin passkey required' }, { status: 403 })
+      }
       const passkeyUrl = new URL('/settings/passkey', req.url)
       passkeyUrl.searchParams.set('next', pathname)
       return NextResponse.redirect(passkeyUrl)
     }
+    // Passkey cookie is valid — this is enough auth for the settings tree.
+    // Skip the session check below so /settings and /api/settings do not
+    // redirect to /login.
+    return NextResponse.next()
   }
 
   // 3. Localhost — trusted, no auth required. lib/auth.getCurrentUser()

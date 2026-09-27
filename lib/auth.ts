@@ -190,8 +190,7 @@ export async function requireRole(role: UserRole) {
 export async function validateOwnerPassword(submitted: string) {
   const expected = process.env.OWNER_PASSWORD
   if (!expected) {
-    // No password configured — only localhost should be reaching here in practice,
-    // and middleware handles the localhost short-circuit. If this is hit, deny.
+    // No password configured — deny.
     return null
   }
   if (submitted.length !== expected.length) return null
@@ -199,7 +198,15 @@ export async function validateOwnerPassword(submitted: string) {
   const expectedBytes = Buffer.from(expected)
   if (submittedBytes.length !== expectedBytes.length) return null
   if (!crypto.timingSafeEqual(submittedBytes, expectedBytes)) return null
-  return await getOrCreateOwner()
+  // Password matches. Return a synthetic owner object so the login works
+  // even when DATABASE_URL is not configured (no DB call needed).
+  return {
+    id: OWNER_AUTH_ID,
+    authId: OWNER_AUTH_ID,
+    email: process.env.OWNER_EMAIL || 'owner@localhost',
+    name: process.env.OWNER_NAME || 'Owner',
+    role: 'admin' as UserRole,
+  }
 }
 
 // ─── MCP API key (agents) ────────────────────────────────────────────────────
