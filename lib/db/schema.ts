@@ -422,6 +422,10 @@ export const settings = pgTable("settings", {
   onboardingEnabled: boolean("onboarding_enabled").default(true).notNull(),
   onboardingComplete: boolean("onboarding_complete").default(false).notNull(),
   bindingInterviewComplete: boolean("binding_interview_complete").default(false).notNull(),
+  /** Primary business currency — PHP for Palawan agencies by default */
+  defaultCurrency: varchar("default_currency", { length: 3 }).default("PHP").notNull(),
+  /** Secondary currency shown alongside quotes/invoices — USD by default */
+  secondaryCurrency: varchar("secondary_currency", { length: 3 }).default("USD").notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 

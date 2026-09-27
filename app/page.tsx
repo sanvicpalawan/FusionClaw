@@ -816,64 +816,57 @@ export default function Page() {
         <Reveal>
           <p className="eyebrow-pill" style={{ marginBottom: 22 }}>Price</p>
           <h2 className="fc-h2" style={{ maxWidth: 700, marginBottom: 34 }}>
-            The server is free. The only thing worth charging for is the setup.
+            The CRM is free. The only thing worth charging for is your success.
           </h2>
         </Reveal>
         <div className="fc-grid-3">
           <Reveal>
             <article className="card fc-panel corner-ticks" style={{ height: "100%" }}>
-              <p className="eyebrow" style={{ marginBottom: 10 }}>Self-hosted</p>
-              <div className="stat-value" style={{ color: "var(--elite-ink)" }}>$0</div>
-              <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginBottom: 16 }}>MIT, forever</p>
+              <p className="eyebrow" style={{ marginBottom: 10 }}>Starter</p>
+              <div className="stat-value" style={{ color: "var(--elite-ink)" }}>₱10,000</div>
+              <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginBottom: 16 }}>one-time setup</p>
               <p className="elite-t4" style={{ color: "var(--elite-ink-2)" }}>
-                Clone it, run <code style={{ fontFamily: "var(--elite-font-mono)" }}>docker compose up</code>, point your
-                agent at it. Every safety feature on this page is in the free version; none of them
-                are the paid tier.
+                Your business imported, branded with your logo, currency set to PHP, and one real workflow running.
+                Perfect for solopreneurs, small shops, and local service pros in Palawan.
               </p>
-              <a className="btn btn-ghost" href={REPO} rel="noopener" style={{ marginTop: 18 }}>
-                Read the source
+              <a className="btn btn-ghost" href="mailto:sanvicpalawan@gmail.com?subject=FusionClaw%20Starter%20Setup" style={{ marginTop: 18 }}>
+                Get started
               </a>
             </article>
           </Reveal>
           <Reveal delay={90}>
             <article className="card fc-panel inner-ring glossy-top" style={{ height: "100%" }}>
-              <p className="eyebrow" style={{ marginBottom: 10, color: "var(--elite-accent)" }}>Hosted</p>
-              <div className="stat-value" style={{ color: "var(--elite-accent)" }}>$24</div>
-              <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginBottom: 16 }}>per month, one business</p>
+              <p className="eyebrow" style={{ marginBottom: 10, color: "var(--elite-accent)" }}>Pro</p>
+              <div className="stat-value" style={{ color: "var(--elite-accent)" }}>₱2,500</div>
+              <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginBottom: 16 }}>per month</p>
               <p className="elite-t4" style={{ color: "var(--elite-ink-2)" }}>
-                We run the Postgres and the app; you keep your own keys. Priced against Twenty at
-                $9 a seat and Moxie at $12, because a single-tenant instance is worth more than a
-                seat and nowhere near the $99 this used to ask.
+                Full CRM + POS + Booking + Invoicing + AI agent support.
+                We host your database on our secure Palawan server. USD billing available.
               </p>
               <span className="elite-t6" style={{ color: "var(--elite-warn)", display: "block", marginTop: 18 }}>
-                Not self-serve yet — provisioning is still a person.
+                Includes 50 active leads per month
               </span>
             </article>
           </Reveal>
           <Reveal delay={140}>
             <article className="card fc-panel corner-ticks" style={{ height: "100%" }}>
-              <p className="eyebrow" style={{ marginBottom: 10 }}>Set up with us</p>
-              <div className="stat-value" style={{ color: "var(--elite-ink)" }}>$490</div>
-              <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginBottom: 16 }}>once, then hosting</p>
+              <p className="eyebrow" style={{ marginBottom: 10 }}>Enterprise</p>
+              <div className="stat-value" style={{ color: "var(--elite-ink)" }}>Custom</div>
+              <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginBottom: 16 }}>contact us</p>
               <p className="elite-t4" style={{ color: "var(--elite-ink-2)" }}>
-                Your data imported, the scopes cut to your agent&apos;s actual job, the runtime
-                configured, and one real workflow running before we leave. This is the part that
-                takes a person, so it is the part with a price on it.
+                Multi-location chains, custom integrations, white-label for your own clients.
+                Full source code access + support in English and Filipino.
               </p>
-              <a className="btn btn-primary" href="mailto:rob@fusiondataco.com?subject=FusionClaw%20setup" style={{ marginTop: 18 }}>
-                Email Rob
+              <a className="btn btn-primary" href="mailto:sanvicpalawan@gmail.com?subject=FusionClaw%20Enterprise%20Inquiry" style={{ marginTop: 18 }}>
+                Talk to us
               </a>
             </article>
           </Reveal>
         </div>
         <Reveal delay={180}>
           <p className="elite-t5" style={{ color: "var(--elite-ink-3)", marginTop: 22, maxWidth: 760 }}>
-            Full working against the field — Twenty, Odoo, HoneyBook, Bonsai, Moxie, Attio and the
-            agent-runtime wave — is in{" "}
-            <a href={`${REPO}/blob/main/COMPS.md`} style={{ color: "var(--elite-accent)" }} rel="noopener">COMPS.md</a>{" "}
-            and{" "}
-            <a href={`${REPO}/blob/main/MODEL.md`} style={{ color: "var(--elite-accent)" }} rel="noopener">MODEL.md</a>{" "}
-            in the repo, with every price cited.
+            All plans include free migration from Excel, WhatsApp CSV, or your old CRM.
+            Built for Philippine businesses — PHP default, USD secondary, BIR-ready invoicing available.
           </p>
         </Reveal>
       </section>
@@ -886,16 +879,16 @@ export default function Page() {
         >
           <span className="fc-mark">F</span>
           <div style={{ marginRight: "auto" }}>
-            <div style={{ fontFamily: "var(--font-space-grotesk), system-ui", fontWeight: 700 }}>FusionClaw</div>
+            <div style={{ fontFamily: "var(--font-space-grotesk), system-ui", fontWeight: 700 }}>FusionClaw PH</div>
             <div className="elite-t6" style={{ color: "var(--elite-ink-3)" }}>
-              The business-data layer for an agent runtime. Built by Fusion Data Company.
+              Business automation for Palawan. Built by Sanvic Palawan Digital.
             </div>
           </div>
           <nav className="elite-t5" style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
             <a href={REPO} rel="noopener" style={{ color: "var(--elite-ink-2)" }}>GitHub</a>
             <a href={`${REPO}/tree/main/mcp-server`} rel="noopener" style={{ color: "var(--elite-ink-2)" }}>MCP server</a>
             <a href={DEMO} rel="noopener" style={{ color: "var(--elite-ink-2)" }}>Demo</a>
-            <a href="mailto:rob@fusiondataco.com" style={{ color: "var(--elite-ink-2)" }}>rob@fusiondataco.com</a>
+            <a href="mailto:sanvicpalawan@gmail.com" style={{ color: "var(--elite-ink-2)" }}>sanvicpalawan@gmail.com</a>
           </nav>
         </div>
       </footer>

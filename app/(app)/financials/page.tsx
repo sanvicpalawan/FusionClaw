@@ -77,7 +77,7 @@ export default function FinancialsPage() {
     } catch { /* empty */ } finally { setLoading(false); }
   };
 
-  const fmt = (v: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(v || 0);
+  const fmt = (v: number) => new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 0 }).format(v || 0);
 
   const metrics = summary
     ? [
@@ -221,7 +221,7 @@ export default function FinancialsPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-sm font-semibold text-text-primary">
-                    {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(parseFloat(inv.total))}
+                    {new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(parseFloat(inv.total))}
                   </span>
                   <span className="text-xs text-red-400">Due {new Date(inv.dueDate).toLocaleDateString()}</span>
                 </div>

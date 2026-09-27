@@ -106,7 +106,7 @@ export default function ExpensesPage() {
 
   const fmt = (v: string | number) => {
     const n = typeof v === "string" ? parseFloat(v) : v;
-    return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n || 0);
+    return new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(n || 0);
   };
 
   const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
