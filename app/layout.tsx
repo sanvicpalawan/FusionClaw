@@ -22,12 +22,12 @@ export const metadata: Metadata = {
   title: 'FusionClaw — the business-data layer for your agent',
   description:
       'Your agent already runs your terminal. FusionClaw gives it your customers, jobs, invoices, expenses and notes over MCP — with per-agent scoped keys, a confirmation gate on anything destructive, rate limits and an audit log of everything it did. Open source, self-hosted, one Postgres. Works with Hermes, OpenClaw and Claude Code.',
-  metadataBase: new URL('https://fusionclaw.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   openGraph: {
     title: 'FusionClaw — the business-data layer for your agent',
     description:
       'Your agent already runs your terminal. FusionClaw gives it your customers, jobs, invoices, expenses and notes over MCP — with per-agent scoped keys, a confirmation gate on anything destructive, rate limits and an audit log of everything it did. Open source, self-hosted, one Postgres. Works with Hermes, OpenClaw and Claude Code.',
-    url: 'https://fusionclaw.app',
+    url: 'https://sanvicpalawan.github.io/FusionClaw',
     siteName: 'FusionClaw',
     images: [
       {

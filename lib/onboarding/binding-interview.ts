@@ -17,7 +17,7 @@ export interface InterviewQuestion {
 
 export const BINDING_INTERVIEW_QUESTIONS: InterviewQuestion[] = [
   // Identity (you, the operator)
-  { id: "your-name",         bucket: "identity", question: "What's your name and the title you put on email signatures?", placeholder: "e.g. Rob Yeager — Founder, Fusion Data Co." },
+  { id: "your-name",         bucket: "identity", question: "What's your name and the title you put on email signatures?", placeholder: "e.g. Sanvic Palawan — Founder, Sanvic Palawan Digital" },
   { id: "your-role",         bucket: "identity", question: "What do you actually spend most of your time doing day-to-day?", placeholder: "e.g. coding, sales calls, content, ops...", long: true },
   { id: "your-strengths",    bucket: "identity", question: "What are you genuinely great at — the things people come to you for?", placeholder: "Be specific. The agent will lean on these.", long: true },
   { id: "your-weaknesses",   bucket: "identity", question: "What do you wish you could hand off entirely?", placeholder: "Anything you avoid, hate, or are slow at.", long: true },

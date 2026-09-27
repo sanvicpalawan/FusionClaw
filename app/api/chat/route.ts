@@ -269,7 +269,7 @@ BEHAVIOR RULES:
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": "https://fusionclaw.app",
+        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
         "X-Title": "FusionClaw",
       },
       body: JSON.stringify({

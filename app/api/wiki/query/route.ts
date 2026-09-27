@@ -47,7 +47,7 @@ async function callOpenRouter(question: string, hits: QueryHit[]): Promise<strin
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "https://fusionclaw.app",
+        "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
         "X-Title": "FusionClaw Wiki Query",
       },
       body: JSON.stringify({
