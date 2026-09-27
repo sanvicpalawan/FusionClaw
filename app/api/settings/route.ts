@@ -3,12 +3,19 @@ import { db } from "@/lib/db";
 import { settings } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
-// GET /api/settings — fetch current settings
-export async function GET() {
+// GET /api/settings — fetch current settings (admin passkey gated)
+export async function GET(request: NextRequest) {
+  // Double-guard: the middleware sets fc_admin_passkey on /settings paths,
+  // but API routes can be hit directly — verify the cookie here too.
+  const passkeyCookie = request.cookies.get("fc_admin_passkey")?.value;
+  const expected = process.env.ADMIN_PASSKEY || "5309";
+  if (!passkeyCookie || passkeyCookie !== expected) {
+    return NextResponse.json({ error: "Admin passkey required" }, { status: 403 });
+  }
+
   try {
     const result = await db.select().from(settings).limit(1);
     if (!result[0]) {
-      // Create defaults
       const created = await db.insert(settings).values({
         defaultImageModel: "fal-ai/nano-banana-pro",
         chatModel: "anthropic/claude-sonnet-4",
@@ -24,8 +31,15 @@ export async function GET() {
   }
 }
 
-// PATCH /api/settings — update settings
+// PATCH /api/settings — update settings (admin passkey gated)
 export async function PATCH(request: NextRequest) {
+  // Double-guard: verify admin passkey cookie
+  const passkeyCookie = request.cookies.get("fc_admin_passkey")?.value;
+  const expected = process.env.ADMIN_PASSKEY || "5309";
+  if (!passkeyCookie || passkeyCookie !== expected) {
+    return NextResponse.json({ error: "Admin passkey required" }, { status: 403 });
+  }
+
   try {
     const body = await request.json();
 
